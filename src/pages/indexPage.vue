@@ -16,7 +16,7 @@
       <PostList :post-list="postList" />
     </a-tab-pane>
     <a-tab-pane key="picture" tab="图片">
-      <PictureList />
+      <PictureList :picture-list="pictureList" />
     </a-tab-pane>
     <a-tab-pane key="User" tab="用户">
       <UserList :user-list="userList" />
@@ -43,14 +43,7 @@ import myAxios from "@/plugins/MyAxios";
 
 const postList = ref([]);
 const userList = ref([]);
-
-myAxios.post("/user/list/page/vo", {}).then((res: any) => {
-  userList.value = res.records;
-});
-
-myAxios.post("/post/list/page/vo", {}).then((res: any) => {
-  postList.value = res.records;
-});
+const pictureList = ref([]);
 
 const route = useRoute();
 const router = useRouter();
@@ -62,7 +55,36 @@ const initSearchParams = {
   pageNum: 1,
 };
 
+/**
+ * 加载数据
+ */
+const loadData = (params: any) => {
+  const postQuery = {
+    ...params,
+    searchText: params.text,
+  };
+  myAxios.post("/post/list/page/vo", postQuery).then((res: any) => {
+    postList.value = res.records;
+  });
+  const userQuery = {
+    ...params,
+    userName: params.text,
+  };
+  myAxios.post("/user/list/page/vo", userQuery).then((res: any) => {
+    userList.value = res.records;
+  });
+  const pictureQuery = {
+    ...params,
+    searchText: params.text,
+  };
+  myAxios.post("/picture/list/page/vo", pictureQuery).then((res: any) => {
+    pictureList.value = res.records;
+  });
+};
+
 const searchParams = ref(initSearchParams);
+
+loadData(searchParams);
 
 watchEffect(() => {
   searchParams.value = {
@@ -72,10 +94,11 @@ watchEffect(() => {
 });
 
 const onSearch = (value: string) => {
-  alert(value);
+  console.log(value);
   router.push({
     query: searchParams.value,
   });
+  loadData(searchParams.value);
 };
 const onChange = (key: string) => {
   router.push({
