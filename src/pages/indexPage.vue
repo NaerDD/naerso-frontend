@@ -58,7 +58,7 @@ const initSearchParams = {
 /**
  * 加载数据
  */
-const loadData = (params: any) => {
+const loadDataOld = (params: any) => {
   const postQuery = {
     ...params,
     searchText: params.text,
@@ -81,15 +81,29 @@ const loadData = (params: any) => {
     pictureList.value = res.records;
   });
 };
+/**
+ * 加载数据
+ */
+const loadData = (params: any) => {
+  const query = {
+    ...params,
+    searchText: params.text,
+  };
+  myAxios.post("search/all", query).then((res: any) => {
+    postList.value = res.postList;
+    userList.value = res.userList;
+    pictureList.value = res.pictureVOList;
+  });
+};
 
 const searchParams = ref(initSearchParams);
 
-loadData(searchParams);
+loadData(searchParams.value);
 
 watchEffect(() => {
   searchParams.value = {
     ...initSearchParams,
-    text: route.query.text,
+    text: route.query.text || "",
   } as any;
 });
 
@@ -100,6 +114,7 @@ const onSearch = (value: string) => {
   });
   loadData(searchParams.value);
 };
+
 const onChange = (key: string) => {
   router.push({
     path: `/${key}`,
