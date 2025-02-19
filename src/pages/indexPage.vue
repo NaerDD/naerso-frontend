@@ -52,43 +52,43 @@ const searchText = ref(route.query.type);
 /**
  * 加载数据
  */
-const loadDataOld = (params: any) => {
-  const postQuery = {
-    ...params,
-    searchText: params.text,
-  };
-  myAxios.post("/post/list/page/vo", postQuery).then((res: any) => {
-    postList.value = res.records;
-  });
-  const userQuery = {
-    ...params,
-    userName: params.text,
-  };
-  myAxios.post("/user/list/page/vo", userQuery).then((res: any) => {
-    userList.value = res.records;
-  });
-  const pictureQuery = {
-    ...params,
-    searchText: params.text,
-  };
-  myAxios.post("/picture/list/page/vo", pictureQuery).then((res: any) => {
-    pictureList.value = res.records;
-  });
-};
+// const loadDataOld = (params: any) => {
+//   const postQuery = {
+//     ...params,
+//     searchText: params.text,
+//   };
+//   myAxios.post("/post/list/page/vo", postQuery).then((res: any) => {
+//     postList.value = res.records;
+//   });
+//   const userQuery = {
+//     ...params,
+//     userName: params.text,
+//   };
+//   myAxios.post("/user/list/page/vo", userQuery).then((res: any) => {
+//     userList.value = res.records;
+//   });
+//   const pictureQuery = {
+//     ...params,
+//     searchText: params.text,
+//   };
+//   myAxios.post("/picture/list/page/vo", pictureQuery).then((res: any) => {
+//     pictureList.value = res.records;
+//   });
+// };
 /**
  * 加载数据
  */
-const loadAllData = (params: any) => {
-  const query = {
-    ...params,
-    searchText: params.text,
-  };
-  myAxios.post("search/all", query).then((res: any) => {
-    postList.value = res.postList;
-    userList.value = res.userList;
-    pictureList.value = res.pictureVOList;
-  });
-};
+// const loadAllData = (params: any) => {
+//   const query = {
+//     ...params,
+//     searchText: params.text,
+//   };
+//   myAxios.post("search/all", query).then((res: any) => {
+//     postList.value = res.postList;
+//     userList.value = res.userList;
+//     pictureList.value = res.pictureVOList;
+//   });
+// };
 /**
  * 加载单类数据
  */
@@ -104,11 +104,11 @@ const loadData = (params: any) => {
   };
   myAxios.post("search/all", query).then((res: any) => {
     if (type === "post") {
-      postList.value = res.postList;
+      postList.value = res.dataList;
     } else if (type === "user") {
-      userList.value = res.userList;
+      userList.value = res.dataList;
     } else if (type === "picture") {
-      pictureList.value = res.pictureVOList;
+      pictureList.value = res.dataList;
     }
   });
 };
